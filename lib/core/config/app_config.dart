@@ -12,7 +12,7 @@ abstract final class AppConfig {
   /// `https://ciao-kids-tutor.<subdomain>.workers.dev`.
   static const String claudeProxyUrl = String.fromEnvironment(
     'CLAUDE_PROXY_URL',
-    defaultValue: '',
+    defaultValue: 'https://ciao-kids-tutor.bill-mancuso.workers.dev',
   );
 
   /// Whether the live Claude tutor is configured and should be offered.
