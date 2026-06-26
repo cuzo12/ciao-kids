@@ -25,7 +25,11 @@
       "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat analyze --no-pub)",
       "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat build web)",
       "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat run -d chrome --web-browser-flag \"--disable-web-security\")",
-      "PowerShell(git add -A)"
+      "PowerShell(git add -A)",
+      "PowerShell(git push -u origin main)",
+      "PowerShell(git push origin main 2>&1)",
+      "Skill(claude-api)",
+      "Skill(claude-api:*)"
     ]
   }
 }

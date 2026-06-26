@@ -8,6 +8,7 @@ import '../../features/auth/presentation/screens/signup_screen.dart';
 import '../../features/conversation/domain/entities/conversation_script.dart';
 import '../../features/conversation/presentation/screens/conversation_list_screen.dart';
 import '../../features/conversation/presentation/screens/conversation_screen.dart';
+import '../../features/ai_chat/presentation/screens/claude_chat_screen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/lessons/domain/entities/lesson.dart';
 import '../../features/lessons/presentation/controllers/learning_controller.dart';
@@ -111,6 +112,11 @@ class AppRouter {
         path: Routes.stories,
         name: Routes.storiesName,
         builder: (_, __) => const StoryListScreen(),
+      ),
+      GoRoute(
+        path: Routes.aiChat,
+        name: Routes.aiChatName,
+        builder: (_, __) => const ClaudeChatScreen(),
       ),
       GoRoute(
         path: Routes.story,

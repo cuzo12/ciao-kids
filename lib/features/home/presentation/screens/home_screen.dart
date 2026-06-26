@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/config/app_config.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -162,6 +163,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: Column(
                         children: <Widget>[
+                          if (AppConfig.claudeEnabled) ...<Widget>[
+                            _ActivityCard(
+                              emoji: '✨',
+                              title: 'Chat with a real tutor',
+                              subtitle: 'Open-ended Italian, powered by AI',
+                              color: AppColors.accent,
+                              onTap: () =>
+                                  context.pushNamed(Routes.aiChatName),
+                            ),
+                            const SizedBox(height: AppSpacing.md),
+                          ],
                           _ActivityCard(
                             emoji: '💬',
                             title: 'Practice Talking',

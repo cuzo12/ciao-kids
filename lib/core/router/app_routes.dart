@@ -42,6 +42,9 @@ abstract final class Routes {
   /// Story player, parameterized by story id (`/story/:id`).
   static const String story = '/story/:id';
 
+  /// Live Claude tutor free-chat.
+  static const String aiChat = '/ai-chat';
+
   // Named-route identifiers (used by GoRouter `goNamed`/`pushNamed`).
   static const String splashName = 'splash';
   static const String loginName = 'login';
@@ -55,4 +58,5 @@ abstract final class Routes {
   static const String parentName = 'parent';
   static const String storiesName = 'stories';
   static const String storyName = 'story';
+  static const String aiChatName = 'aiChat';
 }

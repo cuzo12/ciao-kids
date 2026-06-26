@@ -1,6 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/config/app_config.dart';
+import '../../features/ai_chat/data/remote_tutor_service.dart';
+
 import '../../core/services/speech/speech_recognition_service.dart';
 import '../../core/services/speech/tts_service.dart';
 import '../../features/auth/data/datasources/auth_local_datasource.dart';
@@ -75,6 +78,10 @@ Future<void> configureDependencies() async {
     ConversationRepositoryImpl.new,
   );
   sl.registerLazySingleton<StoryRepository>(StoryRepositoryImpl.new);
+  // Live Claude tutor proxy (only used when AppConfig.claudeEnabled).
+  sl.registerLazySingleton<RemoteTutorService>(
+    () => RemoteTutorService(proxyUrl: AppConfig.claudeProxyUrl),
+  );
   sl.registerLazySingleton<StatsLocalDataSource>(
     () => StatsLocalDataSourceImpl(sl<SharedPreferences>()),
   );
