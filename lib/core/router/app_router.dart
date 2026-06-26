@@ -1,0 +1,214 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '../../features/auth/presentation/controllers/auth_controller.dart';
+import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/auth/presentation/screens/signup_screen.dart';
+import '../../features/conversation/domain/entities/conversation_script.dart';
+import '../../features/conversation/presentation/screens/conversation_list_screen.dart';
+import '../../features/conversation/presentation/screens/conversation_screen.dart';
+import '../../features/home/presentation/screens/home_screen.dart';
+import '../../features/lessons/domain/entities/lesson.dart';
+import '../../features/lessons/presentation/controllers/learning_controller.dart';
+import '../../features/lessons/presentation/screens/lesson_player_screen.dart';
+import '../../features/parent/presentation/screens/parent_dashboard_screen.dart';
+import '../../features/pronunciation/presentation/screens/pronunciation_screen.dart';
+import '../../features/rewards/presentation/screens/rewards_screen.dart';
+import '../../features/splash/presentation/screens/splash_screen.dart';
+import '../../features/story/domain/entities/story.dart';
+import '../../features/story/presentation/screens/story_list_screen.dart';
+import '../../features/story/presentation/screens/story_screen.dart';
+import 'app_routes.dart';
+
+/// Builds and owns the application's [GoRouter] instance.
+///
+/// The router is *auth-aware*: it observes [AuthController] (via
+/// `refreshListenable`) and redirects between the public area (splash / login /
+/// signup) and the private area (home) whenever the authentication state
+/// changes. This keeps navigation guards in one declarative place instead of
+/// scattered across screens.
+class AppRouter {
+  /// Creates an [AppRouter] driven by the supplied [authController].
+  AppRouter(this._authController);
+
+  final AuthController _authController;
+
+  /// The configured router, suitable for `MaterialApp.router(routerConfig:)`.
+  late final GoRouter config = GoRouter(
+    initialLocation: Routes.splash,
+    refreshListenable: _authController,
+    redirect: _redirect,
+    routes: <RouteBase>[
+      GoRoute(
+        path: Routes.splash,
+        name: Routes.splashName,
+        builder: (_, __) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: Routes.login,
+        name: Routes.loginName,
+        builder: (_, __) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: Routes.signup,
+        name: Routes.signupName,
+        builder: (_, __) => const SignupScreen(),
+      ),
+      GoRoute(
+        path: Routes.home,
+        name: Routes.homeName,
+        builder: (_, __) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: Routes.lesson,
+        name: Routes.lessonName,
+        builder: (BuildContext context, GoRouterState state) {
+          // Prefer the Lesson passed via `extra` (from the home tap); fall back
+          // to looking it up by id (e.g. on a deep link / restart).
+          final Object? extra = state.extra;
+          final String id = state.pathParameters['id'] ?? '';
+          final Lesson? lesson = extra is Lesson
+              ? extra
+              : context.read<LearningController>().lessonById(id);
+
+          if (lesson == null) return const _LessonUnavailable();
+          return LessonPlayerScreen(lesson: lesson);
+        },
+      ),
+      GoRoute(
+        path: Routes.talk,
+        name: Routes.talkName,
+        builder: (_, __) => const ConversationListScreen(),
+      ),
+      GoRoute(
+        path: Routes.conversation,
+        name: Routes.conversationName,
+        builder: (BuildContext context, GoRouterState state) {
+          final Object? extra = state.extra;
+          if (extra is ConversationScript) {
+            return ConversationScreen(script: extra);
+          }
+          return const _ConversationUnavailable();
+        },
+      ),
+      GoRoute(
+        path: Routes.pronounce,
+        name: Routes.pronounceName,
+        builder: (_, __) => const PronunciationScreen(),
+      ),
+      GoRoute(
+        path: Routes.rewards,
+        name: Routes.rewardsName,
+        builder: (_, __) => const RewardsScreen(),
+      ),
+      GoRoute(
+        path: Routes.parent,
+        name: Routes.parentName,
+        builder: (_, __) => const ParentDashboardScreen(),
+      ),
+      GoRoute(
+        path: Routes.stories,
+        name: Routes.storiesName,
+        builder: (_, __) => const StoryListScreen(),
+      ),
+      GoRoute(
+        path: Routes.story,
+        name: Routes.storyName,
+        builder: (BuildContext context, GoRouterState state) {
+          final Object? extra = state.extra;
+          if (extra is Story) return StoryScreen(story: extra);
+          return const _StoryUnavailable();
+        },
+      ),
+    ],
+  );
+
+  /// Decides whether the current navigation should be redirected.
+  ///
+  /// Returns the path to redirect to, or `null` to allow the navigation.
+  String? _redirect(BuildContext context, GoRouterState state) {
+    final AuthStatus status = _authController.status;
+    final String location = state.matchedLocation;
+
+    // While the persisted session is still being restored, hold on splash.
+    if (status == AuthStatus.unknown) {
+      return location == Routes.splash ? null : Routes.splash;
+    }
+
+    final bool onAuthFlow =
+        location == Routes.login || location == Routes.signup;
+
+    // Signed out: only the auth flow is reachable.
+    if (status == AuthStatus.unauthenticated) {
+      return onAuthFlow ? null : Routes.login;
+    }
+
+    // Signed in: bounce away from splash/auth into the app.
+    if (location == Routes.splash || onAuthFlow) {
+      return Routes.home;
+    }
+
+    return null;
+  }
+}
+
+/// Fallback shown if a lesson route resolves to no known lesson.
+class _LessonUnavailable extends StatelessWidget {
+  const _LessonUnavailable();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () =>
+              context.canPop() ? context.pop() : context.go(Routes.home),
+        ),
+      ),
+      body: const Center(child: Text("We couldn't find that lesson.")),
+    );
+  }
+}
+
+/// Fallback shown if a conversation is opened without its script (e.g. a cold
+/// deep link). Conversations are normally launched from the Talk menu.
+class _ConversationUnavailable extends StatelessWidget {
+  const _ConversationUnavailable();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () =>
+              context.canPop() ? context.pop() : context.go(Routes.talk),
+        ),
+      ),
+      body: const Center(
+        child: Text('Open a conversation from the Talk menu.'),
+      ),
+    );
+  }
+}
+
+/// Fallback shown if a story is opened without its data (cold deep link).
+class _StoryUnavailable extends StatelessWidget {
+  const _StoryUnavailable();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () =>
+              context.canPop() ? context.pop() : context.go(Routes.stories),
+        ),
+      ),
+      body: const Center(child: Text('Open a story from the Story menu.')),
+    );
+  }
+}

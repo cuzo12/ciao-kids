@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Copy-Item -Path \"C:\\\\Users\\\\Mancuso\\\\OneDrive\\\\Desktop\\\\New folder\\\\Spokane OST War Room.jsx\" -Destination \"C:\\\\Users\\\\Mancuso\\\\OneDrive\\\\Desktop\\\\SpokaneOST\\\\App.jsx\")",
+      "Bash(pip install *)",
+      "Bash(python3 -c ' *)",
+      "WebFetch(domain:www.hqmc.marines.mil)",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__list_connected_browsers",
+      "Bash(head -c 100 /dev/null; wc -l \"C:/Users/Mancuso/OneDrive/Desktop/SpokaneOST/App.jsx\")",
+      "PowerShell(cd \"C:\\\\Users\\\\Mancuso\\\\OneDrive\\\\Desktop\\\\SpokaneOST\"; git show HEAD~2:App.jsx | Select-String \"^const EGA_IMG\" | ForEach-Object { $_.Line.Length })",
+      "PowerShell($flutter = \\(Get-Command flutter -ErrorAction SilentlyContinue\\); if \\($flutter\\) { Write-Output \"FLUTTER FOUND: $\\($flutter.Source\\)\"; flutter --version } else { Write-Output \"FLUTTER NOT FOUND\" })",
+      "PowerShell($dart = \\(Get-Command dart -ErrorAction SilentlyContinue\\); if \\($dart\\) { Write-Output \"DART FOUND: $\\($dart.Source\\)\" } else { Write-Output \"DART NOT FOUND\" }; Write-Output \"---DIRECTORY CONTENTS---\"; Get-ChildItem -Force \"C:\\\\Users\\\\Mancuso\\\\OneDrive\\\\Desktop\\\\Claude\" | Select-Object Name, Length, Mode | Format-Table -AutoSize)",
+      "PowerShell($paths = @\\(\"C:\\\\flutter\",\"C:\\\\src\\\\flutter\",\"C:\\\\dev\\\\flutter\",\"$env:USERPROFILE\\\\flutter\",\"$env:USERPROFILE\\\\fvm\",\"C:\\\\tools\\\\flutter\",\"$env:LOCALAPPDATA\\\\flutter\"\\); foreach \\($p in $paths\\) { if \\(Test-Path $p\\) { Write-Output \"FOUND: $p\" } }; Write-Output \"---git---\"; $git = \\(Get-Command git -ErrorAction SilentlyContinue\\); if \\($git\\) { Write-Output \"GIT: $\\($git.Source\\)\" } else { Write-Output \"GIT NOT FOUND\" }; Write-Output \"---editors---\"; foreach \\($e in @\\(\"code\",\"studio64\"\\)\\) { $c = Get-Command $e -ErrorAction SilentlyContinue; if \\($c\\) { Write-Output \"$e : $\\($c.Source\\)\" } }; Write-Output \"---Android Studio dir---\"; if \\(Test-Path \"$env:LOCALAPPDATA\\\\Programs\\\\Android Studio\"\\) { Write-Output \"Android Studio installed\" } elseif \\(Test-Path \"C:\\\\Program Files\\\\Android\\\\Android Studio\"\\) { Write-Output \"Android Studio installed \\(Program Files\\)\" } else { Write-Output \"Android Studio not found in common paths\" })",
+      "PowerShell(Remove-Item \"C:\\\\Users\\\\Mancuso\\\\OneDrive\\\\Desktop\\\\Claude\\\\lib\\\\features\\\\home\\\\presentation\\\\widgets\\\\topic_card.dart\" -Force; if \\(-not \\(Test-Path \"C:\\\\Users\\\\Mancuso\\\\OneDrive\\\\Desktop\\\\Claude\\\\lib\\\\features\\\\home\\\\presentation\\\\widgets\\\\topic_card.dart\"\\)\\) { Write-Output \"Deleted topic_card.dart\" })",
+      "PowerShell(Remove-Item \"C:\\\\Users\\\\Mancuso\\\\OneDrive\\\\Desktop\\\\Claude\\\\lib\\\\features\\\\conversation\\\\presentation\\\\widgets\\\\mic_button.dart\" -Force; if \\(-not \\(Test-Path \"C:\\\\Users\\\\Mancuso\\\\OneDrive\\\\Desktop\\\\Claude\\\\lib\\\\features\\\\conversation\\\\presentation\\\\widgets\\\\mic_button.dart\"\\)\\) { Write-Output \"Deleted old conversation mic_button.dart\" })",
+      "PowerShell(winget search --id Flutter.Flutter --exact 2>$null)",
+      "PowerShell(winget search flutter --source winget 2>$null)",
+      "PowerShell(winget search flutter --source winget --accept-source-agreements --disable-interactivity 2>$null)",
+      "PowerShell(git clone https://github.com/flutter/flutter.git -b stable C:\\\\src\\\\flutter)",
+      "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat --version)",
+      "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat create . --platforms web,android,ios --org com.ciaokids --project-name ciao_kids)",
+      "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat analyze 2>&1)",
+      "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat analyze)",
+      "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat analyze --no-pub)",
+      "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat build web)",
+      "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat run -d chrome --web-browser-flag \"--disable-web-security\")",
+      "PowerShell(git add -A)"
+    ]
+  }
+}

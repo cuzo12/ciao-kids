@@ -1,0 +1,63 @@
+name: ciao_kids
+description: "Ciao Kids — an AI-powered Italian language tutor for children ages 5–15."
+publish_to: "none"
+
+# App version. Format: <semantic-version>+<build-number>.
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+# ---------------------------------------------------------------------------
+# Runtime dependencies.
+#
+# The dependency set is intentionally small and stable for Milestone 1. Heavier
+# packages (Firebase, speech-to-text, text-to-speech) are introduced in the
+# milestones that need them so the project always resolves and runs.
+# ---------------------------------------------------------------------------
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management — lightweight, well-supported ChangeNotifier wiring.
+  provider: ^6.1.2
+
+  # Declarative, URL-based navigation with auth-aware redirects.
+  go_router: ^14.2.0
+
+  # Service locator for dependency injection (keeps UI free of construction).
+  get_it: ^7.7.0
+
+  # Value-equality for entities/models without hand-written == / hashCode.
+  equatable: ^2.0.5
+
+  # Local key/value persistence (auth session, preferences, offline cache).
+  shared_preferences: ^2.2.3
+
+  # Friendly rounded typography suited to a children's product.
+  google_fonts: ^6.2.1
+
+  # Password hashing for the local auth datasource (replaced by Firebase later).
+  crypto: ^3.0.3
+
+  # On-device text-to-speech (the tutor's Italian voice). Free, no API key.
+  flutter_tts: ^4.2.0
+
+  # On-device speech recognition (listening to the child). Free, no API key.
+  speech_to_text: ^7.0.0
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Anthropic-recommended lint set; see analysis_options.yaml.
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  # Asset folders are declared as the corresponding art is added per milestone.
+  # assets:
+  #   - assets/images/
+  #   - assets/animations/
