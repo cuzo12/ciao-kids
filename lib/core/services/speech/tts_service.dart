@@ -35,13 +35,70 @@ class FlutterTtsService implements TtsService {
     if (_ready) return;
     try {
       await _tts.setLanguage(AppConstants.italianTtsLocale);
-      // A slower rate helps young learners catch each syllable.
-      await _tts.setSpeechRate(0.45);
-      await _tts.setPitch(1.0);
+      await _selectBestItalianVoice();
+      // A natural conversational pace (not the choppy slow that sounds robotic),
+      // with a slightly brighter pitch for a friendly girl voice.
+      await _tts.setSpeechRate(0.5);
+      await _tts.setPitch(1.08);
       await _tts.awaitSpeakCompletion(true);
       _ready = true;
     } catch (_) {
       _ready = false;
+    }
+  }
+
+  /// Picks the smoothest, most natural-sounding female Italian voice available.
+  ///
+  /// Default "compact" voices sound robotic; higher-quality voices (Apple
+  /// "enhanced/premium", Google/Microsoft "neural/natural") sound far smoother.
+  /// We also prefer a female voice to match the tutor persona (Giulia). Falls
+  /// back silently to the platform default when nothing better is installed.
+  Future<void> _selectBestItalianVoice() async {
+    try {
+      final dynamic raw = await _tts.getVoices;
+      if (raw is! List) return;
+
+      Map<String, dynamic>? best;
+      int bestScore = -1;
+      for (final dynamic v in raw) {
+        if (v is! Map) continue;
+        final String locale = '${v['locale'] ?? ''}'.toLowerCase();
+        if (!locale.startsWith('it')) continue;
+        final String name = '${v['name'] ?? ''}'.toLowerCase();
+
+        int score = 0;
+        for (final String q in const <String>[
+          'enhanced', 'premium', 'neural', 'natural',
+        ]) {
+          if (name.contains(q)) score += 6;
+        }
+        for (final String f in const <String>[
+          'female', 'alice', 'federica', 'elsa', 'isabella',
+          'giulia', 'paola', 'luciana', 'emma', 'google',
+        ]) {
+          if (name.contains(f)) score += 4;
+        }
+        for (final String m in const <String>[
+          'male', 'cosimo', 'diego', 'paolo', 'luca',
+        ]) {
+          if (name.contains(m)) score -= 6;
+        }
+        if (name.contains('compact')) score -= 3;
+
+        if (score > bestScore) {
+          bestScore = score;
+          best = <String, dynamic>{'name': v['name'], 'locale': v['locale']};
+        }
+      }
+
+      if (best != null) {
+        await _tts.setVoice(<String, String>{
+          'name': '${best['name']}',
+          'locale': '${best['locale']}',
+        });
+      }
+    } catch (_) {
+      // Voice selection is best-effort; keep the default voice on any failure.
     }
   }
 
@@ -65,7 +122,7 @@ class FlutterTtsService implements TtsService {
       await _tts.stop();
       await _tts.setSpeechRate(0.28);
       await _tts.speak(text);
-      await _tts.setSpeechRate(0.45); // restore the default learner rate
+      await _tts.setSpeechRate(0.5); // restore the default conversational rate
     } catch (_) {
       // Audio is optional.
     }

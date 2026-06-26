@@ -72,11 +72,11 @@ class ClaudeChatController extends ChangeNotifier {
   Future<void> init() async {
     await _tts.init();
     _speechAvailable = await _speech.init();
-    const String greeting = 'Ciao! Sono Luca. 😊 Come ti chiami? '
-        '(Hi! I\'m Luca. What\'s your name?)';
+    const String greeting = 'Ciao! Sono Giulia. 😊 Come ti chiami? '
+        '(Hi! I\'m Giulia. What\'s your name?)';
     _messages.add(_msg(MessageSender.tutor, greeting));
     notifyListeners();
-    await _tts.speak('Ciao! Sono Luca. Come ti chiami?');
+    await _tts.speak('Ciao! Sono Giulia. Come ti chiami?');
   }
 
   /// Sends the child's [text] and appends the tutor's reply.

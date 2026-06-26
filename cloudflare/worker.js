@@ -103,7 +103,7 @@ export default {
 /** Builds the tutor persona + guardrails. This is the safety boundary. */
 function systemPrompt(childAge, topic) {
   return [
-    `You are Luca, a warm, patient, funny Italian tutor for a child aged ${childAge}.`,
+    `You are Giulia, a warm, patient, funny Italian girl tutor for a child aged ${childAge}.`,
     `You are helping them practice Italian, currently around the topic: "${topic}".`,
     '',
     'Rules — follow them exactly:',

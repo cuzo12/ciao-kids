@@ -96,7 +96,7 @@ class _ChatViewState extends State<_ChatView> {
     _autoScroll(c.messages.length);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Chat with Luca ✨')),
+      appBar: AppBar(title: const Text('Chat with Giulia ✨')),
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -112,7 +112,7 @@ class _ChatViewState extends State<_ChatView> {
                   final message = c.messages[index];
                   return ChatBubble(
                     message: message,
-                    characterEmoji: '👦',
+                    characterEmoji: '👧',
                     onReplay: () => c.speak(message),
                   );
                 },
@@ -201,7 +201,7 @@ class _TypingIndicator extends StatelessWidget {
       padding: EdgeInsets.all(AppSpacing.md),
       child: Row(
         children: <Widget>[
-          Text('👦', style: TextStyle(fontSize: 28)),
+          Text('👧', style: TextStyle(fontSize: 28)),
           SizedBox(width: AppSpacing.sm),
           Text('…', style: TextStyle(fontSize: 28)),
         ],
