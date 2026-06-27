@@ -25,6 +25,7 @@ import '../../features/games/presentation/screens/fill_blank_screen.dart';
 import '../../features/games/presentation/screens/emoji_match_screen.dart';
 import '../../features/games/presentation/screens/sound_match_screen.dart';
 import '../../features/games/presentation/screens/memory_match_screen.dart';
+import '../../features/games/presentation/screens/numbers_game_screen.dart';
 import '../../features/curriculum/data/curriculum_data.dart';
 import '../../features/curriculum/presentation/screens/curriculum_screen.dart';
 import '../../features/curriculum/presentation/screens/curriculum_day_screen.dart';
@@ -177,6 +178,11 @@ class AppRouter {
         path: Routes.memoryMatch,
         name: Routes.memoryMatchName,
         builder: (_, __) => const MemoryMatchScreen(),
+      ),
+      GoRoute(
+        path: Routes.numbersGame,
+        name: Routes.numbersGameName,
+        builder: (_, __) => const NumbersGameScreen(),
       ),
       GoRoute(
         path: Routes.review,

@@ -41,7 +41,8 @@
       "PowerShell(git commit -m \"Improve speech recognition: use device Italian locale, score all candidates, lower pass bar\")",
       "PowerShell(git commit -m \"TTS: force an Italian voice \\(retry until web voices load\\), natural pitch\")",
       "PowerShell(git commit -m \"Add Listening game and past-tense verbs \\(+ past-tense sentences\\)\")",
-      "PowerShell(git commit -m \"Add Sound Match \\(pick-from-10 audio quiz\\) and Memory Match games\")"
+      "PowerShell(git commit -m \"Add Sound Match \\(pick-from-10 audio quiz\\) and Memory Match games\")",
+      "PowerShell(git commit -m \"Add Numbers & Money game and phrasebook packs \\(airport, beach, time, day\\)\")"
     ]
   }
 }
