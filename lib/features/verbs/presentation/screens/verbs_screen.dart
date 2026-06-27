@@ -18,13 +18,14 @@ class VerbsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Verbs'),
           bottom: const TabBar(
             tabs: <Widget>[
-              Tab(text: 'Learn'),
+              Tab(text: 'Present'),
+              Tab(text: 'Past'),
               Tab(text: 'Practice'),
             ],
           ),
@@ -32,7 +33,8 @@ class VerbsScreen extends StatelessWidget {
         body: const SafeArea(
           child: TabBarView(
             children: <Widget>[
-              _LearnTab(),
+              _TablesTab(past: false),
+              _TablesTab(past: true),
               _PracticeTab(),
             ],
           ),
@@ -42,8 +44,14 @@ class VerbsScreen extends StatelessWidget {
   }
 }
 
-class _LearnTab extends StatelessWidget {
-  const _LearnTab();
+class _TablesTab extends StatelessWidget {
+  const _TablesTab({required this.past});
+
+  /// Whether to show the passato prossimo (past) instead of the present tense.
+  final bool past;
+
+  /// Drop the "/a" / "/e" agreement hint before speaking aloud.
+  String _spoken(String form) => form.split('/').first;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +62,9 @@ class _LearnTab extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(AppSpacing.sm),
           child: Text(
-            'These verbs build real sentences. Tap a verb to see how it changes.',
+            past
+                ? 'The past tense — "I ate, I went". Perfect for talking about your day. (Girls add -a where you see /a.)'
+                : 'These verbs build real sentences. Tap a verb to see how it changes.',
             style: text.bodyLarge,
           ),
         ),
@@ -67,7 +77,7 @@ class _LearnTab extends StatelessWidget {
               childrenPadding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.md, vertical: AppSpacing.xs),
               children: <Widget>[
-                for (int i = 0; i < v.forms.length; i++)
+                for (int i = 0; i < 6; i++)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 2),
                     child: Row(
@@ -77,14 +87,16 @@ class _LearnTab extends StatelessWidget {
                           child: Text(Conjugations.persons[i], style: text.labelLarge),
                         ),
                         Expanded(
-                          child: Text('${v.forms[i]}  ·  ${Conjugations.personsEn[i]}',
-                              style: text.titleMedium),
+                          child: Text(
+                            '${past ? v.past[i] : v.forms[i]}  ·  ${Conjugations.personsEn[i]}',
+                            style: text.titleMedium,
+                          ),
                         ),
                         IconButton(
                           icon: const Icon(Icons.volume_up_rounded,
                               color: AppColors.tertiary, size: 20),
-                          onPressed: () =>
-                              sl<TtsService>().speak('${Conjugations.persons[i]} ${v.forms[i]}'),
+                          onPressed: () => sl<TtsService>().speak(
+                              '${Conjugations.persons[i]} ${_spoken(past ? v.past[i] : v.forms[i])}'),
                         ),
                       ],
                     ),

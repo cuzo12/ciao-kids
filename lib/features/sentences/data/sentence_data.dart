@@ -36,5 +36,9 @@ abstract final class SentenceBank {
     SentenceItem('Il mio colore preferito è blu', 'My favorite color is blue', '🔵'),
     SentenceItem('Ho un cane e un gatto', 'I have a dog and a cat', '🐾'),
     SentenceItem('Dove è la stazione', 'Where is the station', '🚉'),
+    SentenceItem('Ho mangiato la pizza', 'I ate the pizza', '🍕'),
+    SentenceItem('Sono andato al mare', 'I went to the sea', '🌊'),
+    SentenceItem('Ieri ho giocato a calcio', 'Yesterday I played soccer', '⚽'),
+    SentenceItem('Abbiamo visto il Colosseo', 'We saw the Colosseum', '🏛️'),
   ];
 }

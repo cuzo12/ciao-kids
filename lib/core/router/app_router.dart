@@ -31,6 +31,7 @@ import '../../features/player/presentation/screens/avatar_screen.dart';
 import '../../features/phrasebook/presentation/screens/phrasebook_screen.dart';
 import '../../features/verbs/presentation/screens/verbs_screen.dart';
 import '../../features/sentences/presentation/screens/sentence_builder_screen.dart';
+import '../../features/listening/presentation/screens/listening_screen.dart';
 import '../../features/story/presentation/screens/story_list_screen.dart';
 import '../../features/story/presentation/screens/story_screen.dart';
 import 'app_routes.dart';
@@ -184,6 +185,11 @@ class AppRouter {
         path: Routes.sentences,
         name: Routes.sentencesName,
         builder: (_, __) => const SentenceBuilderScreen(),
+      ),
+      GoRoute(
+        path: Routes.listening,
+        name: Routes.listeningName,
+        builder: (_, __) => const ListeningScreen(),
       ),
       GoRoute(
         path: Routes.avatar,

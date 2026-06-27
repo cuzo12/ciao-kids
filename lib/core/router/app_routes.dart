@@ -63,6 +63,9 @@ abstract final class Routes {
   /// Sentence builder game.
   static const String sentences = '/sentences';
 
+  /// Listening comprehension game.
+  static const String listening = '/listening';
+
   /// Smart spaced-repetition review.
   static const String review = '/review';
 
@@ -101,4 +104,5 @@ abstract final class Routes {
   static const String phrasebookName = 'phrasebook';
   static const String verbsName = 'verbs';
   static const String sentencesName = 'sentences';
+  static const String listeningName = 'listening';
 }
