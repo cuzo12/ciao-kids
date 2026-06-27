@@ -176,10 +176,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: Column(
                         children: <Widget>[
+                          _ActivityCard(
+                            emoji: '🤖',
+                            title: 'AI Coach',
+                            subtitle: 'Your personal Italian coach',
+                            color: AppColors.primary,
+                            onTap: () => context.pushNamed(Routes.coachName),
+                          ),
+                          const SizedBox(height: AppSpacing.md),
                           if (AppConfig.claudeEnabled) ...<Widget>[
                             _ActivityCard(
                               emoji: '✨',
-                              title: 'Chat with a real tutor',
+                              title: 'Chat with Giulia',
                               subtitle: 'Open-ended Italian, powered by AI',
                               color: AppColors.accent,
                               onTap: () =>

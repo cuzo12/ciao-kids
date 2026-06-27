@@ -31,6 +31,8 @@ import '../../features/curriculum/presentation/screens/curriculum_screen.dart';
 import '../../features/curriculum/presentation/screens/curriculum_day_screen.dart';
 import '../../features/review/presentation/screens/review_screen.dart';
 import '../../features/player/presentation/screens/avatar_screen.dart';
+import '../../features/coach/presentation/screens/coach_screen.dart';
+import '../../features/coach/presentation/screens/goal_setup_screen.dart';
 import '../../features/phrasebook/presentation/screens/phrasebook_screen.dart';
 import '../../features/verbs/presentation/screens/verbs_screen.dart';
 import '../../features/sentences/presentation/screens/sentence_builder_screen.dart';
@@ -213,6 +215,16 @@ class AppRouter {
         path: Routes.avatar,
         name: Routes.avatarName,
         builder: (_, __) => const AvatarScreen(),
+      ),
+      GoRoute(
+        path: Routes.coach,
+        name: Routes.coachName,
+        builder: (_, __) => const CoachScreen(),
+      ),
+      GoRoute(
+        path: Routes.goalSetup,
+        name: Routes.goalSetupName,
+        builder: (_, __) => const GoalSetupScreen(),
       ),
       GoRoute(
         path: Routes.curriculum,

@@ -72,6 +72,12 @@ abstract final class Routes {
   /// Smart spaced-repetition review.
   static const String review = '/review';
 
+  /// AI Language Coach.
+  static const String coach = '/coach';
+
+  /// Goal setup for the coach.
+  static const String goalSetup = '/coach/goals';
+
   /// Avatar customization closet.
   static const String avatar = '/avatar';
 
@@ -107,6 +113,8 @@ abstract final class Routes {
   static const String curriculumDayName = 'curriculumDay';
   static const String reviewName = 'review';
   static const String avatarName = 'avatar';
+  static const String coachName = 'coach';
+  static const String goalSetupName = 'goalSetup';
   static const String phrasebookName = 'phrasebook';
   static const String verbsName = 'verbs';
   static const String sentencesName = 'sentences';

@@ -5,6 +5,7 @@ import '../../core/config/app_config.dart';
 import '../../features/ai_chat/data/remote_tutor_service.dart';
 import '../../features/player/presentation/controllers/player_controller.dart';
 import '../../features/mastery/data/mastery_service.dart';
+import '../../features/coach/data/coach_profile.dart';
 
 import '../../core/services/speech/speech_recognition_service.dart';
 import '../../core/services/speech/tts_service.dart';
@@ -152,5 +153,8 @@ Future<void> configureDependencies() async {
   );
   sl.registerLazySingleton<MasteryService>(
     () => MasteryService(sl<SharedPreferences>()),
+  );
+  sl.registerLazySingleton<CoachProfileService>(
+    () => CoachProfileService(sl<SharedPreferences>()),
   );
 }
