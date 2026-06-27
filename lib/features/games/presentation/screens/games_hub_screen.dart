@@ -56,7 +56,7 @@ class GamesHubScreen extends StatelessWidget {
             _GameTile(
               emoji: '🔊',
               title: 'Sound Match',
-              subtitle: 'Hear it, then pick it out of 10',
+              subtitle: 'Hear Italian, pick the meaning (1 of 10)',
               color: AppColors.primary,
               onTap: () => context.pushNamed(Routes.soundMatchName),
             ),

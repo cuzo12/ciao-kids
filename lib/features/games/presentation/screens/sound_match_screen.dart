@@ -53,25 +53,25 @@ class _SoundMatchScreenState extends State<SoundMatchScreen> {
   List<_Round> _buildRounds() {
     final List<_Round> rounds = <_Round>[];
 
-    // 4 word rounds (10 written words each).
+    // 4 word rounds: hear the Italian word, pick its English meaning (10 options).
     for (final VocabWord w in _mastery.draw(_uid, 4)) {
       final List<String> opts = <String>[
-        w.it,
-        ..._mastery.distractors(w, 9).map((VocabWord d) => d.it),
+        w.en,
+        ..._mastery.distractors(w, 9).map((VocabWord d) => d.en),
       ]..shuffle();
-      rounds.add(_Round(spoken: w.it, answer: w.it, options: opts, wordId: w.id));
+      rounds.add(_Round(spoken: w.it, answer: w.en, options: opts, wordId: w.id));
     }
 
-    // 4 sentence rounds (10 written sentences each).
+    // 4 sentence rounds: hear the Italian sentence, pick its English meaning.
     final List<SentenceItem> sents = List<SentenceItem>.of(SentenceBank.sentences)..shuffle();
     for (final SentenceItem s in sents.take(4)) {
       final List<String> others = sents
           .where((SentenceItem x) => x.italian != s.italian)
-          .map((SentenceItem x) => x.italian)
+          .map((SentenceItem x) => x.english)
           .take(9)
           .toList();
-      final List<String> opts = <String>[s.italian, ...others]..shuffle();
-      rounds.add(_Round(spoken: s.italian, answer: s.italian, options: opts));
+      final List<String> opts = <String>[s.english, ...others]..shuffle();
+      rounds.add(_Round(spoken: s.italian, answer: s.english, options: opts));
     }
 
     rounds.shuffle();
@@ -154,7 +154,7 @@ class _SoundMatchScreenState extends State<SoundMatchScreen> {
                 child: const Icon(Icons.volume_up_rounded, size: 44, color: Colors.white),
               ),
             ),
-            Text('Tap to hear — then pick what you heard', style: text.bodyMedium),
+            Text('Tap to hear the Italian — then pick what it means', style: text.bodyMedium),
             const SizedBox(height: AppSpacing.sm),
             Expanded(
               child: ListView(
