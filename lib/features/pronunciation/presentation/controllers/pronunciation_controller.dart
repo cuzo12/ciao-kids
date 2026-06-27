@@ -5,6 +5,7 @@ import '../../../../core/services/speech/speech_recognition_service.dart';
 import '../../../../core/services/speech/tts_service.dart';
 import '../../../../core/utils/text_similarity.dart';
 import '../../../lessons/domain/entities/vocabulary_item.dart';
+import '../../../mastery/data/mastery_service.dart';
 import '../../../stats/domain/usecases/add_practice_time.dart';
 import '../../../stats/domain/usecases/record_pronunciation_result.dart';
 
@@ -33,11 +34,13 @@ class PronunciationController extends ChangeNotifier {
     required SpeechRecognitionService speech,
     required RecordPronunciationResult recordResult,
     required AddPracticeTime addPracticeTime,
+    required MasteryService mastery,
   })  : _userId = userId,
         _tts = tts,
         _speech = speech,
         _recordResult = recordResult,
-        _addPracticeTime = addPracticeTime;
+        _addPracticeTime = addPracticeTime,
+        _mastery = mastery;
 
   /// The words to drill.
   final List<VocabularyItem> words;
@@ -47,6 +50,7 @@ class PronunciationController extends ChangeNotifier {
   final SpeechRecognitionService _speech;
   final RecordPronunciationResult _recordResult;
   final AddPracticeTime _addPracticeTime;
+  final MasteryService _mastery;
 
   final DateTime _startedAt = DateTime.now();
 
@@ -132,6 +136,7 @@ class PronunciationController extends ChangeNotifier {
     _status = PronStatus.scored;
     notifyListeners();
     _recordResult(userId: _userId, score: 100);
+    _mastery.record(_userId, current.italian, true);
   }
 
   void _score(String transcript) {
@@ -141,6 +146,7 @@ class PronunciationController extends ChangeNotifier {
     _status = PronStatus.scored;
     notifyListeners();
     _recordResult(userId: _userId, score: score);
+    _mastery.record(_userId, current.italian, score >= AppConstants.pronunciationPassScore);
   }
 
   /// Moves to the next word, or finishes the drill.

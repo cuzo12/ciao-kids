@@ -88,12 +88,12 @@ abstract final class LessonCatalog {
     id: 'numbers',
     title: 'Numbers',
     emoji: '🔢',
-    subtitle: 'Count from one to six',
+    subtitle: 'Count from one to ten',
     order: 2,
     characterName: 'Giulia',
     characterEmoji: '👧',
     greeting: "Ciao! I'm Giulia. Ready to count in Italian?",
-    goal: "You'll learn the numbers from one to six.",
+    goal: "You'll learn the numbers from one to ten.",
     vocabulary: const <VocabularyItem>[
       VocabularyItem(
           italian: 'Uno', english: 'One', emoji: '1️⃣', pronunciation: 'OO-no'),
@@ -113,8 +113,26 @@ abstract final class LessonCatalog {
           pronunciation: 'CHEEN-kweh'),
       VocabularyItem(
           italian: 'Sei', english: 'Six', emoji: '6️⃣', pronunciation: 'SEH-ee'),
+      VocabularyItem(
+          italian: 'Sette', english: 'Seven', emoji: '7️⃣', pronunciation: 'SEHT-teh'),
+      VocabularyItem(
+          italian: 'Otto', english: 'Eight', emoji: '8️⃣', pronunciation: 'OT-to'),
+      VocabularyItem(
+          italian: 'Nove', english: 'Nine', emoji: '9️⃣', pronunciation: 'NOH-veh'),
+      VocabularyItem(
+          italian: 'Dieci', english: 'Ten', emoji: '🔟', pronunciation: 'DYEH-chee'),
     ],
     quiz: const <QuizQuestion>[
+      QuizQuestion(
+        prompt: "How do you say 'Ten'?",
+        options: <String>['Otto', 'Dieci', 'Sette', 'Nove'],
+        correctIndex: 1,
+      ),
+      QuizQuestion(
+        prompt: "What is 'Otto' in English?",
+        options: <String>['Six', 'Seven', 'Eight', 'Nine'],
+        correctIndex: 2,
+      ),
       QuizQuestion(
         prompt: "What is 'Tre' in English?",
         options: <String>['Two', 'Three', 'Five', 'One'],
@@ -200,7 +218,7 @@ abstract final class LessonCatalog {
     characterName: 'Captain Leo',
     characterEmoji: '🧭',
     greeting: "Adventure time! Let's meet some animali.",
-    goal: "You'll learn the names of six animals.",
+    goal: "You'll learn the names of lots of animals.",
     vocabulary: const <VocabularyItem>[
       VocabularyItem(
           italian: 'Cane', english: 'Dog', emoji: '🐶', pronunciation: 'KAH-neh'),
@@ -226,6 +244,27 @@ abstract final class LessonCatalog {
           english: 'Rabbit',
           emoji: '🐰',
           pronunciation: 'ko-NEE-lyo'),
+      VocabularyItem(
+          italian: 'Mucca', english: 'Cow', emoji: '🐄', pronunciation: 'MOO-ka'),
+      VocabularyItem(
+          italian: 'Leone', english: 'Lion', emoji: '🦁', pronunciation: 'leh-OH-neh'),
+      VocabularyItem(
+          italian: 'Orso', english: 'Bear', emoji: '🐻', pronunciation: 'OR-so'),
+      VocabularyItem(
+          italian: 'Elefante',
+          english: 'Elephant',
+          emoji: '🐘',
+          pronunciation: 'eh-leh-FAN-teh'),
+      VocabularyItem(
+          italian: 'Scimmia',
+          english: 'Monkey',
+          emoji: '🐵',
+          pronunciation: 'SHEEM-mya'),
+      VocabularyItem(
+          italian: 'Tartaruga',
+          english: 'Turtle',
+          emoji: '🐢',
+          pronunciation: 'tar-ta-ROO-ga'),
     ],
     quiz: const <QuizQuestion>[
       QuizQuestion(
@@ -258,7 +297,7 @@ abstract final class LessonCatalog {
     characterName: 'Nonna Rosa',
     characterEmoji: '👵',
     greeting: 'Vieni in cucina! Let\'s name some yummy food.',
-    goal: "You'll learn six tasty food words.",
+    goal: "You'll learn lots of tasty food words.",
     vocabulary: const <VocabularyItem>[
       VocabularyItem(
           italian: 'Pane', english: 'Bread', emoji: '🍞', pronunciation: 'PAH-neh'),
@@ -284,6 +323,27 @@ abstract final class LessonCatalog {
           english: 'Ice cream',
           emoji: '🍨',
           pronunciation: 'jeh-LAH-to'),
+      VocabularyItem(
+          italian: 'Pasta', english: 'Pasta', emoji: '🍝', pronunciation: 'PAH-sta'),
+      VocabularyItem(
+          italian: 'Latte', english: 'Milk', emoji: '🥛', pronunciation: 'LAHT-teh'),
+      VocabularyItem(
+          italian: 'Banana',
+          english: 'Banana',
+          emoji: '🍌',
+          pronunciation: 'ba-NAH-na'),
+      VocabularyItem(
+          italian: 'Pollo',
+          english: 'Chicken',
+          emoji: '🍗',
+          pronunciation: 'POL-lo'),
+      VocabularyItem(
+          italian: 'Uovo', english: 'Egg', emoji: '🥚', pronunciation: 'WOH-vo'),
+      VocabularyItem(
+          italian: 'Cioccolato',
+          english: 'Chocolate',
+          emoji: '🍫',
+          pronunciation: 'chok-ko-LAH-to'),
     ],
     quiz: const <QuizQuestion>[
       QuizQuestion(

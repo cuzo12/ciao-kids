@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/config/app_config.dart';
 import '../../features/ai_chat/data/remote_tutor_service.dart';
 import '../../features/player/presentation/controllers/player_controller.dart';
-import '../../features/review/data/review_service.dart';
+import '../../features/mastery/data/mastery_service.dart';
 
 import '../../core/services/speech/speech_recognition_service.dart';
 import '../../core/services/speech/tts_service.dart';
@@ -150,7 +150,7 @@ Future<void> configureDependencies() async {
   sl.registerLazySingleton<PlayerController>(
     () => PlayerController(sl<SharedPreferences>()),
   );
-  sl.registerLazySingleton<ReviewService>(
-    () => ReviewService(sl<SharedPreferences>()),
+  sl.registerLazySingleton<MasteryService>(
+    () => MasteryService(sl<SharedPreferences>()),
   );
 }

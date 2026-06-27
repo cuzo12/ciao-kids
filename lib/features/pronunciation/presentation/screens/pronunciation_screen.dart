@@ -9,10 +9,13 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/mic_button.dart';
 import '../../../../shared/widgets/primary_button.dart';
+import '../../../../core/vocab/syllabify.dart';
+import '../../../../core/vocab/vocab_bank.dart';
 import '../../../auth/presentation/controllers/auth_controller.dart';
+import '../../../lessons/domain/entities/vocabulary_item.dart';
+import '../../../mastery/data/mastery_service.dart';
 import '../../../stats/domain/usecases/add_practice_time.dart';
 import '../../../stats/domain/usecases/record_pronunciation_result.dart';
-import '../../data/pronunciation_word_bank.dart';
 import '../controllers/pronunciation_controller.dart';
 
 /// The Pronunciation Coach: hear a word, say it, and get an encouraging score.
@@ -23,14 +26,24 @@ class PronunciationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String userId = context.read<AuthController>().user?.id ?? 'guest';
+    final List<VocabularyItem> words = sl<MasteryService>()
+        .draw(userId, 8)
+        .map((VocabWord w) => VocabularyItem(
+              italian: w.it,
+              english: w.en,
+              emoji: w.emoji.isEmpty ? '🗣️' : w.emoji,
+              pronunciation: syllabify(w.it),
+            ))
+        .toList();
     return ChangeNotifierProvider<PronunciationController>(
       create: (_) => PronunciationController(
-        words: PronunciationWordBank.words,
+        words: words,
         userId: userId,
         tts: sl<TtsService>(),
         speech: sl<SpeechRecognitionService>(),
         recordResult: sl<RecordPronunciationResult>(),
         addPracticeTime: sl<AddPracticeTime>(),
+        mastery: sl<MasteryService>(),
       )..init(),
       child: const _PronView(),
     );

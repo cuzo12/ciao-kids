@@ -1,13 +1,16 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../app/di/service_locator.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/vocab/vocab_bank.dart';
 import '../../../../shared/widgets/primary_button.dart';
+import '../../../auth/presentation/controllers/auth_controller.dart';
+import '../../../mastery/data/mastery_service.dart';
 import '../../../player/presentation/controllers/player_controller.dart';
-import '../../data/game_word_bank.dart';
 
 class WordScrambleScreen extends StatefulWidget {
   const WordScrambleScreen({super.key});
@@ -17,7 +20,9 @@ class WordScrambleScreen extends StatefulWidget {
 }
 
 class _WordScrambleScreenState extends State<WordScrambleScreen> {
-  late final List<GameWord> _words;
+  final MasteryService _mastery = sl<MasteryService>();
+  late final String _uid;
+  late final List<VocabWord> _words;
   int _index = 0;
   int _score = 0;
   String _guess = '';
@@ -27,13 +32,12 @@ class _WordScrambleScreenState extends State<WordScrambleScreen> {
   @override
   void initState() {
     super.initState();
-    _words = List<GameWord>.of(
-      [...GameWordBank.beginner, ...GameWordBank.intermediate],
-    )..shuffle(Random());
-    _words.removeRange(min(8, _words.length), _words.length);
+    _uid = context.read<AuthController>().user?.id ?? 'guest';
+    _words = _mastery.draw(_uid, 8);
   }
 
   String _scramble(String word) {
+    if (word.length < 2) return word;
     final List<String> chars = word.toLowerCase().split('')..shuffle(Random());
     final String result = chars.join();
     return result == word.toLowerCase() ? _scramble(word) : result;
@@ -41,7 +45,8 @@ class _WordScrambleScreenState extends State<WordScrambleScreen> {
 
   void _check() {
     final bool ok =
-        _guess.trim().toLowerCase() == _words[_index].italian.toLowerCase();
+        _guess.trim().toLowerCase() == _words[_index].it.toLowerCase();
+    _mastery.record(_uid, _words[_index].id, ok);
     setState(() {
       _correct = ok;
       if (ok) _score++;
@@ -64,6 +69,7 @@ class _WordScrambleScreenState extends State<WordScrambleScreen> {
   @override
   Widget build(BuildContext context) {
     final TextTheme text = Theme.of(context).textTheme;
+    final VocabWord w = _words[_index];
 
     return Scaffold(
       appBar: AppBar(title: const Text('Word Scramble')),
@@ -82,9 +88,9 @@ class _WordScrambleScreenState extends State<WordScrambleScreen> {
                     const SizedBox(height: AppSpacing.xs),
                     Text('${_index + 1} / ${_words.length}', style: text.labelMedium),
                     const Spacer(),
-                    Text(_words[_index].emoji, style: const TextStyle(fontSize: 56)),
+                    Text(w.emoji.isEmpty ? '🔤' : w.emoji, style: const TextStyle(fontSize: 56)),
                     const SizedBox(height: AppSpacing.sm),
-                    Text('English: ${_words[_index].english}', style: text.bodyLarge),
+                    Text('English: ${w.en}', style: text.bodyLarge),
                     const SizedBox(height: AppSpacing.md),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
@@ -93,8 +99,9 @@ class _WordScrambleScreenState extends State<WordScrambleScreen> {
                         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
                       ),
                       child: Text(
-                        _scramble(_words[_index].italian),
+                        _scramble(w.it),
                         style: text.displayMedium?.copyWith(letterSpacing: 6),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                     const SizedBox(height: AppSpacing.lg),
@@ -116,6 +123,12 @@ class _WordScrambleScreenState extends State<WordScrambleScreen> {
                         ),
                       ),
                     ),
+                    if (_correct == false)
+                      Padding(
+                        padding: const EdgeInsets.only(top: AppSpacing.sm),
+                        child: Text('It was: ${w.it}',
+                            style: text.bodyMedium?.copyWith(color: AppColors.secondary)),
+                      ),
                     const SizedBox(height: AppSpacing.md),
                     SizedBox(
                       width: 200,

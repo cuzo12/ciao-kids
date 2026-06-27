@@ -34,7 +34,9 @@
       "PowerShell(git push origin main)",
       "PowerShell(curl.exe -s -X POST 'https://ciao-kids-tutor.bill-mancuso.workers.dev' -H 'content-type: application/json' --data '{\"messages\":[{\"role\":\"user\",\"content\":\"ciao\"}],\"childAge\":10,\"topic\":\"Greetings\"}')",
       "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat analyze lib 2>&1)",
-      "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat build web --no-wasm-dry-run 2>&1)"
+      "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat build web --no-wasm-dry-run 2>&1)",
+      "PowerShell(git commit -m \"Fix Italian speech recognition: use it-IT locale, forgiving scoring, manual override\")",
+      "PowerShell(git commit -m \"Add adaptive vocab pool shared across games, pronunciation, review; fix flashcard; expand lessons\")"
     ]
   }
 }

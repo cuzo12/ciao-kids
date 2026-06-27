@@ -1,13 +1,16 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../app/di/service_locator.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/vocab/vocab_bank.dart';
 import '../../../../shared/widgets/primary_button.dart';
+import '../../../auth/presentation/controllers/auth_controller.dart';
+import '../../../mastery/data/mastery_service.dart';
 import '../../../player/presentation/controllers/player_controller.dart';
-import '../../data/game_word_bank.dart';
 
 class EmojiMatchScreen extends StatefulWidget {
   const EmojiMatchScreen({super.key});
@@ -17,8 +20,10 @@ class EmojiMatchScreen extends StatefulWidget {
 }
 
 class _EmojiMatchScreenState extends State<EmojiMatchScreen> {
-  late final List<GameWord> _words;
-  late List<GameWord> _shuffledEmojis;
+  final MasteryService _mastery = sl<MasteryService>();
+  late final String _uid;
+  late final List<VocabWord> _words;
+  late final List<VocabWord> _shuffledEmojis;
   int _score = 0;
   int _attempts = 0;
   String? _selectedWord;
@@ -27,23 +32,22 @@ class _EmojiMatchScreenState extends State<EmojiMatchScreen> {
   @override
   void initState() {
     super.initState();
-    final List<GameWord> pool = List<GameWord>.of(
-      [...GameWordBank.beginner, ...GameWordBank.intermediate],
-    )..shuffle(Random());
-    _words = pool.sublist(0, min(6, pool.length));
-    _shuffledEmojis = List<GameWord>.of(_words)..shuffle(Random());
+    _uid = context.read<AuthController>().user?.id ?? 'guest';
+    _words = _mastery.draw(_uid, 6, needEmoji: true);
+    _shuffledEmojis = List<VocabWord>.of(_words)..shuffle(Random());
   }
 
-  void _selectWord(String italian) {
-    setState(() => _selectedWord = italian);
-  }
+  void _selectWord(String it) => setState(() => _selectedWord = it);
 
-  void _selectEmoji(GameWord word) {
+  void _selectEmoji(VocabWord word) {
     if (_selectedWord == null) return;
     _attempts++;
-    if (_selectedWord == word.italian) {
+    final bool ok = _selectedWord == word.it;
+    // Record against the word the child intended (the selected one).
+    _mastery.record(_uid, _selectedWord!, ok);
+    if (ok) {
       _score++;
-      _matched.add(word.italian);
+      _matched.add(word.it);
       if (_matched.length == _words.length) {
         sl<PlayerController>().record(xp: 10, coins: 2);
       }
@@ -87,13 +91,13 @@ class _EmojiMatchScreenState extends State<EmojiMatchScreen> {
                       spacing: AppSpacing.sm,
                       runSpacing: AppSpacing.sm,
                       children: <Widget>[
-                        for (final GameWord w in _words)
-                          if (!_matched.contains(w.italian))
+                        for (final VocabWord w in _words)
+                          if (!_matched.contains(w.it))
                             ChoiceChip(
-                              label: Text(w.italian),
-                              selected: _selectedWord == w.italian,
+                              label: Text(w.it),
+                              selected: _selectedWord == w.it,
                               selectedColor: AppColors.primary.withValues(alpha: 0.3),
-                              onSelected: (_) => _selectWord(w.italian),
+                              onSelected: (_) => _selectWord(w.it),
                             ),
                       ],
                     ),
@@ -104,8 +108,8 @@ class _EmojiMatchScreenState extends State<EmojiMatchScreen> {
                       spacing: AppSpacing.md,
                       runSpacing: AppSpacing.md,
                       children: <Widget>[
-                        for (final GameWord w in _shuffledEmojis)
-                          if (!_matched.contains(w.italian))
+                        for (final VocabWord w in _shuffledEmojis)
+                          if (!_matched.contains(w.it))
                             GestureDetector(
                               onTap: () => _selectEmoji(w),
                               child: Container(
