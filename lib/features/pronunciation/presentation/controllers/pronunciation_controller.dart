@@ -115,8 +115,8 @@ class PronunciationController extends ChangeNotifier {
       onResult: (String transcript, bool isFinal) {
         _lastTranscript = transcript;
         notifyListeners();
-        if (isFinal) _score(transcript);
       },
+      onAlternatives: _scoreCandidates,
     );
   }
 
@@ -139,10 +139,15 @@ class PronunciationController extends ChangeNotifier {
     _mastery.record(_userId, current.italian, true);
   }
 
-  void _score(String transcript) {
-    final int score = TextSimilarity.bestScore(<String>[transcript], current.italian);
+  void _score(String transcript) => _scoreCandidates(<String>[transcript]);
+
+  /// Scores against every candidate the recognizer offered, keeping the best —
+  /// so the right word counts even when it isn't the recognizer's top guess.
+  void _scoreCandidates(List<String> candidates) {
+    final int score = TextSimilarity.bestScore(candidates, current.italian);
     _lastScore = score;
-    _lastTranscript = transcript.trim().isEmpty ? '(silence)' : transcript;
+    final String top = candidates.isEmpty ? '' : candidates.first;
+    _lastTranscript = top.trim().isEmpty ? '(silence)' : top;
     _status = PronStatus.scored;
     notifyListeners();
     _recordResult(userId: _userId, score: score);

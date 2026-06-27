@@ -6,6 +6,10 @@ import '../../constants/app_constants.dart';
 /// Callback delivering a (partial or final) speech transcript.
 typedef TranscriptCallback = void Function(String transcript, bool isFinal);
 
+/// Callback delivering all candidate transcripts at the end of an utterance.
+/// Recognizers rank several guesses; the right word is often not the top one.
+typedef AlternativesCallback = void Function(List<String> alternatives);
+
 /// Listens to the child and returns what they said as text.
 ///
 /// Behind an interface so the UI depends on the capability, not the
@@ -24,10 +28,12 @@ abstract interface class SpeechRecognitionService {
   /// Whether the engine is actively listening.
   bool get isListening;
 
-  /// Begins listening, reporting transcripts via [onResult].
+  /// Begins listening, reporting transcripts via [onResult]. If provided,
+  /// [onAlternatives] delivers every candidate guess at the end of the utterance.
   Future<void> listen({
     required TranscriptCallback onResult,
-    String localeId,
+    AlternativesCallback? onAlternatives,
+    String? localeId,
   });
 
   /// Stops listening (keeping any final result already delivered).
@@ -42,6 +48,9 @@ class SttSpeechRecognitionService implements SpeechRecognitionService {
   final SpeechToText _speech = SpeechToText();
   bool _available = false;
 
+  /// The Italian locale id this device actually exposes (resolved at init).
+  String _italianLocale = AppConstants.italianSttLocale;
+
   @override
   bool get isAvailable => _available;
 
@@ -52,6 +61,19 @@ class SttSpeechRecognitionService implements SpeechRecognitionService {
   Future<bool> init() async {
     try {
       _available = await _speech.initialize();
+      if (_available) {
+        // Use whatever Italian locale the device really has, instead of a
+        // hard-coded guess — this is what makes it listen in Italian.
+        try {
+          final List<LocaleName> locales = await _speech.locales();
+          final Iterable<LocaleName> italian = locales.where(
+            (LocaleName l) => l.localeId.toLowerCase().startsWith('it'),
+          );
+          if (italian.isNotEmpty) _italianLocale = italian.first.localeId;
+        } catch (_) {
+          // Keep the default Italian locale if enumeration isn't supported.
+        }
+      }
     } catch (_) {
       _available = false;
     }
@@ -61,14 +83,24 @@ class SttSpeechRecognitionService implements SpeechRecognitionService {
   @override
   Future<void> listen({
     required TranscriptCallback onResult,
-    String localeId = AppConstants.italianSttLocale,
+    AlternativesCallback? onAlternatives,
+    String? localeId,
   }) async {
     if (!_available) return;
     try {
       await _speech.listen(
-        onResult: (SpeechRecognitionResult result) =>
-            onResult(result.recognizedWords, result.finalResult),
-        listenOptions: SpeechListenOptions(localeId: localeId),
+        onResult: (SpeechRecognitionResult result) {
+          onResult(result.recognizedWords, result.finalResult);
+          if (result.finalResult && onAlternatives != null) {
+            final List<String> alts = <String>[
+              result.recognizedWords,
+              for (final SpeechRecognitionWords a in result.alternates)
+                a.recognizedWords,
+            ].where((String s) => s.trim().isNotEmpty).toList();
+            onAlternatives(alts);
+          }
+        },
+        listenOptions: SpeechListenOptions(localeId: localeId ?? _italianLocale),
       );
     } catch (_) {
       // Treat any listen failure as "no input"; the UI offers typed fallback.

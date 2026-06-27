@@ -37,7 +37,8 @@
       "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat build web --no-wasm-dry-run 2>&1)",
       "PowerShell(git commit -m \"Fix Italian speech recognition: use it-IT locale, forgiving scoring, manual override\")",
       "PowerShell(git commit -m \"Add adaptive vocab pool shared across games, pronunciation, review; fix flashcard; expand lessons\")",
-      "PowerShell(git commit -m \"Add Sentence Builder game \\(arrange scrambled words into Italian sentences\\)\")"
+      "PowerShell(git commit -m \"Add Sentence Builder game \\(arrange scrambled words into Italian sentences\\)\")",
+      "PowerShell(git commit -m \"Improve speech recognition: use device Italian locale, score all candidates, lower pass bar\")"
     ]
   }
 }

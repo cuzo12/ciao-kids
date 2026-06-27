@@ -65,7 +65,9 @@ abstract final class AppConstants {
   // --- Pronunciation -------------------------------------------------------
 
   /// Similarity (0–100) at/above which a spoken word is accepted as correct.
-  static const int pronunciationPassScore = 70;
+  /// Kept forgiving on purpose: phone speech recognition is imperfect for
+  /// single foreign words, so a close attempt should still count as a win.
+  static const int pronunciationPassScore = 55;
 
   // --- Parent gate ---------------------------------------------------------
 
