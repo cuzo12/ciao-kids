@@ -31,7 +31,10 @@
       "Skill(claude-api)",
       "Skill(claude-api:*)",
       "PowerShell(git add \"lib/core/config/app_config.dart\" \"cloudflare/worker.js\" \"pubspec.yaml\")",
-      "PowerShell(git push origin main)"
+      "PowerShell(git push origin main)",
+      "PowerShell(curl.exe -s -X POST 'https://ciao-kids-tutor.bill-mancuso.workers.dev' -H 'content-type: application/json' --data '{\"messages\":[{\"role\":\"user\",\"content\":\"ciao\"}],\"childAge\":10,\"topic\":\"Greetings\"}')",
+      "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat analyze lib 2>&1)",
+      "PowerShell(& C:\\\\src\\\\flutter\\\\bin\\\\flutter.bat build web --no-wasm-dry-run 2>&1)"
     ]
   }
 }

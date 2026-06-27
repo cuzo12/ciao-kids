@@ -125,8 +125,17 @@ class PronunciationController extends ChangeNotifier {
   /// Scores a typed attempt (fallback when speech is unavailable).
   void submitTyped(String text) => _score(text);
 
+  /// Manual override: the child says they pronounced it right, so accept it.
+  /// A guard against the recognizer simply mishearing a correct attempt.
+  void acceptManually() {
+    _lastScore = 100;
+    _status = PronStatus.scored;
+    notifyListeners();
+    _recordResult(userId: _userId, score: 100);
+  }
+
   void _score(String transcript) {
-    final int score = TextSimilarity.score(transcript, current.italian);
+    final int score = TextSimilarity.bestScore(<String>[transcript], current.italian);
     _lastScore = score;
     _lastTranscript = transcript.trim().isEmpty ? '(silence)' : transcript;
     _status = PronStatus.scored;

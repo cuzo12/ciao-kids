@@ -1,6 +1,27 @@
 /// Text similarity helpers used by the pronunciation coach to compare what the
 /// child said (speech transcript) with the target word.
 abstract final class TextSimilarity {
+  /// Best similarity (0–100) between the target [word] and anything the speech
+  /// engine returned across [candidates].
+  ///
+  /// Speech recognizers often wrap a word in filler ("the gatto please") or
+  /// offer several guesses. We score the whole transcript AND each individual
+  /// word, across every candidate, and keep the best — so a correctly-spoken
+  /// word still scores high even when surrounded by noise.
+  static int bestScore(Iterable<String> candidates, String word) {
+    int best = 0;
+    for (final String candidate in candidates) {
+      best = best > score(candidate, word) ? best : score(candidate, word);
+      for (final String piece in candidate.split(RegExp(r'\s+'))) {
+        if (piece.isEmpty) continue;
+        final int s = score(piece, word);
+        if (s > best) best = s;
+      }
+      if (best == 100) break;
+    }
+    return best;
+  }
+
   /// Returns a 0–100 similarity score between [a] and [b].
   ///
   /// Both strings are normalized (lowercased, accent-stripped, letters only)

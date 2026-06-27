@@ -34,11 +34,16 @@ abstract final class AppConstants {
   /// reveals the answer and moves on (so a child never gets stuck).
   static const int conversationMaxAttempts = 2;
 
-  /// BCP-47 locale used for Italian speech recognition and synthesis.
+  /// BCP-47 locale used for Italian speech synthesis and recognition.
+  ///
+  /// Must be the hyphen form `it-IT`: on the web the Web Speech API (Chrome on
+  /// Android) requires a valid BCP-47 tag, and an underscore variant (`it_IT`)
+  /// is silently ignored — the browser then falls back to English and mishears
+  /// Italian words.
   static const String italianTtsLocale = 'it-IT';
 
-  /// Underscore locale variant some speech-recognition engines expect.
-  static const String italianSttLocale = 'it_IT';
+  /// Locale used for Italian speech recognition (same hyphen form as TTS).
+  static const String italianSttLocale = 'it-IT';
 
   // --- Persistence keys (shared_preferences) -------------------------------
 

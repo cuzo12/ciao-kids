@@ -270,6 +270,14 @@ class _Controls extends StatelessWidget {
               ),
             ],
           ),
+        if (scored && !controller.passed) ...<Widget>[
+          const SizedBox(height: AppSpacing.sm),
+          TextButton.icon(
+            onPressed: controller.acceptManually,
+            icon: const Icon(Icons.thumb_up_alt_outlined),
+            label: const Text('I said it right ✓'),
+          ),
+        ],
         const SizedBox(height: AppSpacing.md),
         PrimaryButton(
           label: scored
