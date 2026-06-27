@@ -13,6 +13,7 @@ import '../../../lessons/domain/entities/progress_summary.dart';
 import '../../../lessons/presentation/controllers/learning_controller.dart';
 import '../../../lessons/presentation/widgets/lesson_card.dart';
 import '../widgets/stat_chip.dart';
+import '../widgets/word_of_the_day.dart';
 
 /// The child's home dashboard — the authenticated landing screen.
 ///
@@ -161,6 +162,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         AppSpacing.lg,
                         AppSpacing.lg,
                       ),
+                      child: WordOfTheDay(),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.lg,
+                        0,
+                        AppSpacing.lg,
+                        AppSpacing.lg,
+                      ),
                       child: Column(
                         children: <Widget>[
                           if (AppConfig.claudeEnabled) ...<Widget>[
@@ -174,6 +186,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             const SizedBox(height: AppSpacing.md),
                           ],
+                          _ActivityCard(
+                            emoji: '📅',
+                            title: '30-Day Journey',
+                            subtitle: 'Daily lessons — Level 1, 2, 3',
+                            color: AppColors.primary,
+                            onTap: () => context.pushNamed(Routes.curriculumName),
+                          ),
+                          const SizedBox(height: AppSpacing.md),
+                          _ActivityCard(
+                            emoji: '🎮',
+                            title: 'Games',
+                            subtitle: 'Scramble, flashcards, fill-in & more',
+                            color: AppColors.accent,
+                            onTap: () => context.pushNamed(Routes.gamesName),
+                          ),
+                          const SizedBox(height: AppSpacing.md),
                           _ActivityCard(
                             emoji: '💬',
                             title: 'Practice Talking',

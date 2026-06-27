@@ -45,6 +45,21 @@ abstract final class Routes {
   /// Live Claude tutor free-chat.
   static const String aiChat = '/ai-chat';
 
+  /// Games hub.
+  static const String games = '/games';
+
+  /// Individual game routes.
+  static const String wordScramble = '/games/word-scramble';
+  static const String flashcard = '/games/flashcard';
+  static const String fillBlank = '/games/fill-blank';
+  static const String emojiMatch = '/games/emoji-match';
+
+  /// 30-day curriculum.
+  static const String curriculum = '/curriculum';
+
+  /// Curriculum day player (`/curriculum/:day`).
+  static const String curriculumDay = '/curriculum/:day';
+
   // Named-route identifiers (used by GoRouter `goNamed`/`pushNamed`).
   static const String splashName = 'splash';
   static const String loginName = 'login';
@@ -59,4 +74,11 @@ abstract final class Routes {
   static const String storiesName = 'stories';
   static const String storyName = 'story';
   static const String aiChatName = 'aiChat';
+  static const String gamesName = 'games';
+  static const String wordScrambleName = 'wordScramble';
+  static const String flashcardName = 'flashcard';
+  static const String fillBlankName = 'fillBlank';
+  static const String emojiMatchName = 'emojiMatch';
+  static const String curriculumName = 'curriculum';
+  static const String curriculumDayName = 'curriculumDay';
 }

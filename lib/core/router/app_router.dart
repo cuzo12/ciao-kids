@@ -18,6 +18,14 @@ import '../../features/pronunciation/presentation/screens/pronunciation_screen.d
 import '../../features/rewards/presentation/screens/rewards_screen.dart';
 import '../../features/splash/presentation/screens/splash_screen.dart';
 import '../../features/story/domain/entities/story.dart';
+import '../../features/games/presentation/screens/games_hub_screen.dart';
+import '../../features/games/presentation/screens/word_scramble_screen.dart';
+import '../../features/games/presentation/screens/flashcard_screen.dart';
+import '../../features/games/presentation/screens/fill_blank_screen.dart';
+import '../../features/games/presentation/screens/emoji_match_screen.dart';
+import '../../features/curriculum/data/curriculum_data.dart';
+import '../../features/curriculum/presentation/screens/curriculum_screen.dart';
+import '../../features/curriculum/presentation/screens/curriculum_day_screen.dart';
 import '../../features/story/presentation/screens/story_list_screen.dart';
 import '../../features/story/presentation/screens/story_screen.dart';
 import 'app_routes.dart';
@@ -125,6 +133,47 @@ class AppRouter {
           final Object? extra = state.extra;
           if (extra is Story) return StoryScreen(story: extra);
           return const _StoryUnavailable();
+        },
+      ),
+      GoRoute(
+        path: Routes.games,
+        name: Routes.gamesName,
+        builder: (_, __) => const GamesHubScreen(),
+      ),
+      GoRoute(
+        path: Routes.wordScramble,
+        name: Routes.wordScrambleName,
+        builder: (_, __) => const WordScrambleScreen(),
+      ),
+      GoRoute(
+        path: Routes.flashcard,
+        name: Routes.flashcardName,
+        builder: (_, __) => const FlashcardScreen(),
+      ),
+      GoRoute(
+        path: Routes.fillBlank,
+        name: Routes.fillBlankName,
+        builder: (_, __) => const FillBlankScreen(),
+      ),
+      GoRoute(
+        path: Routes.emojiMatch,
+        name: Routes.emojiMatchName,
+        builder: (_, __) => const EmojiMatchScreen(),
+      ),
+      GoRoute(
+        path: Routes.curriculum,
+        name: Routes.curriculumName,
+        builder: (_, __) => const CurriculumScreen(),
+      ),
+      GoRoute(
+        path: Routes.curriculumDay,
+        name: Routes.curriculumDayName,
+        builder: (BuildContext context, GoRouterState state) {
+          final Object? extra = state.extra;
+          if (extra is CurriculumDay) {
+            return CurriculumDayScreen(day: extra);
+          }
+          return const CurriculumScreen();
         },
       ),
     ],
