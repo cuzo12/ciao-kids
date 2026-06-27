@@ -60,6 +60,9 @@ abstract final class Routes {
   /// Verb conjugation trainer.
   static const String verbs = '/verbs';
 
+  /// Sentence builder game.
+  static const String sentences = '/sentences';
+
   /// Smart spaced-repetition review.
   static const String review = '/review';
 
@@ -97,4 +100,5 @@ abstract final class Routes {
   static const String avatarName = 'avatar';
   static const String phrasebookName = 'phrasebook';
   static const String verbsName = 'verbs';
+  static const String sentencesName = 'sentences';
 }

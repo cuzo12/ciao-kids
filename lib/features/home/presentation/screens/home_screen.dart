@@ -220,6 +220,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(height: AppSpacing.md),
                           _ActivityCard(
+                            emoji: '🧩',
+                            title: 'Sentence Builder',
+                            subtitle: 'Put the words in the right order',
+                            color: AppColors.tertiary,
+                            onTap: () => context.pushNamed(Routes.sentencesName),
+                          ),
+                          const SizedBox(height: AppSpacing.md),
+                          _ActivityCard(
                             emoji: '🧳',
                             title: 'Travel Phrasebook',
                             subtitle: 'Real phrases for your trip to Italy',
