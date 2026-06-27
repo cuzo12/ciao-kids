@@ -2,9 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../../../app/di/service_locator.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/primary_button.dart';
+import '../../../player/presentation/controllers/player_controller.dart';
 import '../../data/game_word_bank.dart';
 
 class EmojiMatchScreen extends StatefulWidget {
@@ -42,6 +44,9 @@ class _EmojiMatchScreenState extends State<EmojiMatchScreen> {
     if (_selectedWord == word.italian) {
       _score++;
       _matched.add(word.italian);
+      if (_matched.length == _words.length) {
+        sl<PlayerController>().record(xp: 10, coins: 2);
+      }
     }
     setState(() => _selectedWord = null);
   }

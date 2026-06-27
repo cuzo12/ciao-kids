@@ -2,9 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../../../app/di/service_locator.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/primary_button.dart';
+import '../../../player/presentation/controllers/player_controller.dart';
 import '../../data/game_word_bank.dart';
 
 class FlashcardScreen extends StatefulWidget {
@@ -39,7 +41,8 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
         _flipped = false;
       });
     } else {
-      setState(() {});
+      sl<PlayerController>().record(xp: 10, coins: 2);
+      setState(() => _index++); // pushes past the deck → shows the done view
     }
   }
 

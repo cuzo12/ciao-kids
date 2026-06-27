@@ -6,6 +6,7 @@ import '../core/router/app_router.dart';
 import '../core/theme/app_theme.dart';
 import '../features/auth/presentation/controllers/auth_controller.dart';
 import '../features/lessons/presentation/controllers/learning_controller.dart';
+import '../features/player/presentation/controllers/player_controller.dart';
 import 'di/service_locator.dart';
 
 /// Root widget of Ciao Kids.
@@ -42,6 +43,9 @@ class _CiaoKidsAppState extends State<CiaoKidsApp> {
         ChangeNotifierProvider<AuthController>.value(value: _authController),
         ChangeNotifierProvider<LearningController>.value(
           value: sl<LearningController>(),
+        ),
+        ChangeNotifierProvider<PlayerController>.value(
+          value: sl<PlayerController>(),
         ),
       ],
       child: MaterialApp.router(

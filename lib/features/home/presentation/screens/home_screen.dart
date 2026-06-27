@@ -9,10 +9,10 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../auth/presentation/controllers/auth_controller.dart';
 import '../../../lessons/domain/entities/lesson.dart';
-import '../../../lessons/domain/entities/progress_summary.dart';
 import '../../../lessons/presentation/controllers/learning_controller.dart';
 import '../../../lessons/presentation/widgets/lesson_card.dart';
-import '../widgets/stat_chip.dart';
+import '../../../player/presentation/controllers/player_controller.dart';
+import '../../../player/presentation/widgets/daily_goal_header.dart';
 import '../widgets/word_of_the_day.dart';
 
 /// The child's home dashboard — the authenticated landing screen.
@@ -48,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final String? userId = context.read<AuthController>().user?.id;
       if (userId != null) {
         context.read<LearningController>().load(userId);
+        context.read<PlayerController>().load(userId);
       }
     });
   }
@@ -136,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
             : CustomScrollView(
                 slivers: <Widget>[
                   SliverToBoxAdapter(
-                    child: _Header(name: name, summary: learning.summary),
+                    child: DailyGoalHeader(name: name),
                   ),
                   if (learning.nextLesson != null)
                     SliverToBoxAdapter(
@@ -154,9 +155,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                  SliverToBoxAdapter(
+                  const SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(
+                      padding: EdgeInsets.fromLTRB(
                         AppSpacing.lg,
                         0,
                         AppSpacing.lg,
@@ -200,6 +201,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             subtitle: 'Scramble, flashcards, fill-in & more',
                             color: AppColors.accent,
                             onTap: () => context.pushNamed(Routes.gamesName),
+                          ),
+                          const SizedBox(height: AppSpacing.md),
+                          _ActivityCard(
+                            emoji: '🧠',
+                            title: 'Smart Review',
+                            subtitle: 'Practice the words you find tricky',
+                            color: AppColors.tertiary,
+                            onTap: () => context.pushNamed(Routes.reviewName),
                           ),
                           const SizedBox(height: AppSpacing.md),
                           _ActivityCard(
@@ -272,58 +281,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-      ),
-    );
-  }
-}
-
-/// Greeting + gamification header.
-class _Header extends StatelessWidget {
-  const _Header({required this.name, required this.summary});
-
-  final String name;
-  final ProgressSummary summary;
-
-  @override
-  Widget build(BuildContext context) {
-    final TextTheme text = Theme.of(context).textTheme;
-
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        AppSpacing.lg,
-        AppSpacing.sm,
-        AppSpacing.lg,
-        AppSpacing.md,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text('Ciao, $name! 👋', style: text.displayMedium),
-          const SizedBox(height: AppSpacing.xs),
-          Text("Ready for today's Italian?", style: text.bodyMedium),
-          const SizedBox(height: AppSpacing.md),
-          Wrap(
-            spacing: AppSpacing.sm,
-            runSpacing: AppSpacing.sm,
-            children: <Widget>[
-              StatChip(
-                icon: Icons.monetization_on,
-                label: '${summary.totalCoins}',
-                color: AppColors.accent,
-              ),
-              StatChip(
-                icon: Icons.star_rounded,
-                label: '${summary.totalXp} XP',
-                color: AppColors.tertiary,
-              ),
-              StatChip(
-                icon: Icons.local_fire_department,
-                label: '${summary.streakDays}-day streak',
-                color: AppColors.secondary,
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

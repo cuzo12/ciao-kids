@@ -2,9 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../../../app/di/service_locator.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/primary_button.dart';
+import '../../../player/presentation/controllers/player_controller.dart';
 import '../../data/game_word_bank.dart';
 
 class FillBlankScreen extends StatefulWidget {
@@ -46,6 +48,7 @@ class _FillBlankScreenState extends State<FillBlankScreen> {
       if (_index + 1 < _words.length) {
         setState(() { _index++; _answer = ''; _correct = null; });
       } else {
+        sl<PlayerController>().record(xp: 10, coins: 2);
         setState(() => _finished = true);
       }
     });

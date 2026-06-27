@@ -10,6 +10,7 @@ import '../../../../core/services/speech/tts_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/primary_button.dart';
+import '../../../player/presentation/controllers/player_controller.dart';
 import '../../data/curriculum_data.dart';
 
 /// Plays one curriculum day: Vocab → Game → Conversation → Quiz → Done.
@@ -48,6 +49,7 @@ class _CurriculumDayScreenState extends State<CurriculumDayScreen> {
         setState(() { _quizIndex++; _selectedAnswer = null; });
       } else {
         _markComplete();
+        sl<PlayerController>().record(xp: 20, coins: 5);
         setState(() => _step = 4);
       }
     });

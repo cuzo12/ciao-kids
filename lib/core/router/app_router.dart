@@ -26,6 +26,8 @@ import '../../features/games/presentation/screens/emoji_match_screen.dart';
 import '../../features/curriculum/data/curriculum_data.dart';
 import '../../features/curriculum/presentation/screens/curriculum_screen.dart';
 import '../../features/curriculum/presentation/screens/curriculum_day_screen.dart';
+import '../../features/review/presentation/screens/review_screen.dart';
+import '../../features/player/presentation/screens/avatar_screen.dart';
 import '../../features/story/presentation/screens/story_list_screen.dart';
 import '../../features/story/presentation/screens/story_screen.dart';
 import 'app_routes.dart';
@@ -159,6 +161,16 @@ class AppRouter {
         path: Routes.emojiMatch,
         name: Routes.emojiMatchName,
         builder: (_, __) => const EmojiMatchScreen(),
+      ),
+      GoRoute(
+        path: Routes.review,
+        name: Routes.reviewName,
+        builder: (_, __) => const ReviewScreen(),
+      ),
+      GoRoute(
+        path: Routes.avatar,
+        name: Routes.avatarName,
+        builder: (_, __) => const AvatarScreen(),
       ),
       GoRoute(
         path: Routes.curriculum,

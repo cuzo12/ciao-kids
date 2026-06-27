@@ -6,6 +6,7 @@ import '../../../../app/di/service_locator.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/primary_button.dart';
 import '../../../auth/presentation/controllers/auth_controller.dart';
+import '../../../player/presentation/controllers/player_controller.dart';
 import '../../../stats/domain/usecases/add_practice_time.dart';
 import '../../domain/entities/lesson.dart';
 import '../../domain/entities/lesson_stage.dart';
@@ -148,6 +149,7 @@ class _BottomBar extends StatelessWidget {
         seconds: player.elapsedSeconds,
       );
     }
+    await sl<PlayerController>().record(xp: 20, coins: 5);
     if (context.mounted) context.pop();
   }
 

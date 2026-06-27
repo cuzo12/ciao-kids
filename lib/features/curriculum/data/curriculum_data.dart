@@ -1,8 +1,8 @@
-/// 30-day structured curriculum: 3 levels × 10 days.
-///
-/// Each day is ~20 minutes: vocabulary review + a practice game + a short
-/// conversation prompt + a quiz. Days unlock sequentially within each level;
-/// levels unlock when all 10 days of the prior level are complete.
+// 30-day structured curriculum: 3 levels × 10 days.
+//
+// Each day is ~20 minutes: vocabulary review + a practice game + a short
+// conversation prompt + a quiz. Days unlock sequentially within each level;
+// levels unlock when all 10 days of the prior level are complete.
 
 class CurriculumDay {
   const CurriculumDay({

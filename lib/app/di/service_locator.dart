@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/config/app_config.dart';
 import '../../features/ai_chat/data/remote_tutor_service.dart';
+import '../../features/player/presentation/controllers/player_controller.dart';
+import '../../features/review/data/review_service.dart';
 
 import '../../core/services/speech/speech_recognition_service.dart';
 import '../../core/services/speech/tts_service.dart';
@@ -141,5 +143,14 @@ Future<void> configureDependencies() async {
       getLearningState: sl<GetLearningState>(),
       submitLessonResult: sl<SubmitLessonResult>(),
     ),
+  );
+
+  // Gamification + economy (daily goal, streak, coin wallet, avatar) and the
+  // spaced-repetition review engine. Both are local-only.
+  sl.registerLazySingleton<PlayerController>(
+    () => PlayerController(sl<SharedPreferences>()),
+  );
+  sl.registerLazySingleton<ReviewService>(
+    () => ReviewService(sl<SharedPreferences>()),
   );
 }
