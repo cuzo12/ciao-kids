@@ -30,75 +30,71 @@ class FlutterTtsService implements TtsService {
   final FlutterTts _tts = FlutterTts();
   bool _ready = false;
 
+  /// Set once we've locked in an Italian voice (or confirmed none exists).
+  bool _voiceLocked = false;
+
   @override
   Future<void> init() async {
     if (_ready) return;
     try {
       await _tts.setLanguage(AppConstants.italianTtsLocale);
-      await _selectBestItalianVoice();
-      // A natural conversational pace (not the choppy slow that sounds robotic),
-      // with a slightly brighter pitch for a friendly girl voice.
+      // A natural, clear pace at normal pitch — closest to a real Italian voice.
       await _tts.setSpeechRate(0.5);
-      await _tts.setPitch(1.08);
+      await _tts.setPitch(1.0);
       await _tts.awaitSpeakCompletion(true);
       _ready = true;
+      await _ensureItalianVoice();
     } catch (_) {
       _ready = false;
     }
   }
 
-  /// Picks the smoothest, most natural-sounding female Italian voice available.
+  /// Forces an actual Italian voice so words aren't read with English sounds.
   ///
-  /// Default "compact" voices sound robotic; higher-quality voices (Apple
-  /// "enhanced/premium", Google/Microsoft "neural/natural") sound far smoother.
-  /// We also prefer a female voice to match the tutor persona (Giulia). Falls
-  /// back silently to the platform default when nothing better is installed.
-  Future<void> _selectBestItalianVoice() async {
+  /// On the web the voice list loads asynchronously, so the first attempt can
+  /// come back empty — we simply retry on the next [speak] until it's ready.
+  Future<void> _ensureItalianVoice() async {
+    if (_voiceLocked) return;
     try {
       final dynamic raw = await _tts.getVoices;
-      if (raw is! List) return;
+      if (raw is! List || raw.isEmpty) return; // voices not loaded yet — retry later
 
       Map<String, dynamic>? best;
       int bestScore = -1;
       for (final dynamic v in raw) {
         if (v is! Map) continue;
         final String locale = '${v['locale'] ?? ''}'.toLowerCase();
-        if (!locale.startsWith('it')) continue;
+        if (!locale.startsWith('it')) continue; // Italian voices only
         final String name = '${v['name'] ?? ''}'.toLowerCase();
 
-        int score = 0;
-        for (final String q in const <String>[
-          'enhanced', 'premium', 'neural', 'natural',
-        ]) {
+        int score = 1;
+        for (final String q in const <String>['enhanced', 'premium', 'neural', 'natural', 'google']) {
           if (name.contains(q)) score += 6;
         }
-        for (final String f in const <String>[
-          'female', 'alice', 'federica', 'elsa', 'isabella',
-          'giulia', 'paola', 'luciana', 'emma', 'google',
-        ]) {
+        for (final String f in const <String>['female', 'alice', 'federica', 'elsa', 'isabella']) {
           if (name.contains(f)) score += 4;
         }
-        for (final String m in const <String>[
-          'male', 'cosimo', 'diego', 'paolo', 'luca',
-        ]) {
+        for (final String m in const <String>['male', 'cosimo', 'diego', 'luca']) {
           if (name.contains(m)) score -= 6;
         }
         if (name.contains('compact')) score -= 3;
-
         if (score > bestScore) {
           bestScore = score;
           best = <String, dynamic>{'name': v['name'], 'locale': v['locale']};
         }
       }
 
+      // Voices exist now, so lock regardless: if we found an Italian one, use it;
+      // otherwise the it-IT language setting is the best we can do on this device.
       if (best != null) {
         await _tts.setVoice(<String, String>{
           'name': '${best['name']}',
           'locale': '${best['locale']}',
         });
       }
+      _voiceLocked = true;
     } catch (_) {
-      // Voice selection is best-effort; keep the default voice on any failure.
+      // Best-effort; keep the default voice on any failure.
     }
   }
 
@@ -107,6 +103,7 @@ class FlutterTtsService implements TtsService {
     if (text.trim().isEmpty) return;
     try {
       await init();
+      await _ensureItalianVoice(); // retry voice selection until voices load
       await _tts.stop();
       await _tts.speak(text);
     } catch (_) {
@@ -119,10 +116,11 @@ class FlutterTtsService implements TtsService {
     if (text.trim().isEmpty) return;
     try {
       await init();
+      await _ensureItalianVoice();
       await _tts.stop();
-      await _tts.setSpeechRate(0.28);
+      await _tts.setSpeechRate(0.3);
       await _tts.speak(text);
-      await _tts.setSpeechRate(0.5); // restore the default conversational rate
+      await _tts.setSpeechRate(0.5); // restore the default learner rate
     } catch (_) {
       // Audio is optional.
     }
@@ -137,4 +135,3 @@ class FlutterTtsService implements TtsService {
     }
   }
 }
-
