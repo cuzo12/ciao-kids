@@ -54,6 +54,12 @@ abstract final class Routes {
   static const String fillBlank = '/games/fill-blank';
   static const String emojiMatch = '/games/emoji-match';
 
+  /// Travel phrasebook.
+  static const String phrasebook = '/phrasebook';
+
+  /// Verb conjugation trainer.
+  static const String verbs = '/verbs';
+
   /// Smart spaced-repetition review.
   static const String review = '/review';
 
@@ -89,4 +95,6 @@ abstract final class Routes {
   static const String curriculumDayName = 'curriculumDay';
   static const String reviewName = 'review';
   static const String avatarName = 'avatar';
+  static const String phrasebookName = 'phrasebook';
+  static const String verbsName = 'verbs';
 }

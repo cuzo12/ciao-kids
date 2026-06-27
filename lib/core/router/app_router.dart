@@ -28,6 +28,8 @@ import '../../features/curriculum/presentation/screens/curriculum_screen.dart';
 import '../../features/curriculum/presentation/screens/curriculum_day_screen.dart';
 import '../../features/review/presentation/screens/review_screen.dart';
 import '../../features/player/presentation/screens/avatar_screen.dart';
+import '../../features/phrasebook/presentation/screens/phrasebook_screen.dart';
+import '../../features/verbs/presentation/screens/verbs_screen.dart';
 import '../../features/story/presentation/screens/story_list_screen.dart';
 import '../../features/story/presentation/screens/story_screen.dart';
 import 'app_routes.dart';
@@ -166,6 +168,16 @@ class AppRouter {
         path: Routes.review,
         name: Routes.reviewName,
         builder: (_, __) => const ReviewScreen(),
+      ),
+      GoRoute(
+        path: Routes.phrasebook,
+        name: Routes.phrasebookName,
+        builder: (_, __) => const PhrasebookScreen(),
+      ),
+      GoRoute(
+        path: Routes.verbs,
+        name: Routes.verbsName,
+        builder: (_, __) => const VerbsScreen(),
       ),
       GoRoute(
         path: Routes.avatar,
