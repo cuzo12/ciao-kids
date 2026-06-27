@@ -23,6 +23,8 @@ import '../../features/games/presentation/screens/word_scramble_screen.dart';
 import '../../features/games/presentation/screens/flashcard_screen.dart';
 import '../../features/games/presentation/screens/fill_blank_screen.dart';
 import '../../features/games/presentation/screens/emoji_match_screen.dart';
+import '../../features/games/presentation/screens/sound_match_screen.dart';
+import '../../features/games/presentation/screens/memory_match_screen.dart';
 import '../../features/curriculum/data/curriculum_data.dart';
 import '../../features/curriculum/presentation/screens/curriculum_screen.dart';
 import '../../features/curriculum/presentation/screens/curriculum_day_screen.dart';
@@ -165,6 +167,16 @@ class AppRouter {
         path: Routes.emojiMatch,
         name: Routes.emojiMatchName,
         builder: (_, __) => const EmojiMatchScreen(),
+      ),
+      GoRoute(
+        path: Routes.soundMatch,
+        name: Routes.soundMatchName,
+        builder: (_, __) => const SoundMatchScreen(),
+      ),
+      GoRoute(
+        path: Routes.memoryMatch,
+        name: Routes.memoryMatchName,
+        builder: (_, __) => const MemoryMatchScreen(),
       ),
       GoRoute(
         path: Routes.review,

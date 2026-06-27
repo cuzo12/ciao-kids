@@ -53,6 +53,8 @@ abstract final class Routes {
   static const String flashcard = '/games/flashcard';
   static const String fillBlank = '/games/fill-blank';
   static const String emojiMatch = '/games/emoji-match';
+  static const String soundMatch = '/games/sound-match';
+  static const String memoryMatch = '/games/memory-match';
 
   /// Travel phrasebook.
   static const String phrasebook = '/phrasebook';
@@ -97,6 +99,8 @@ abstract final class Routes {
   static const String flashcardName = 'flashcard';
   static const String fillBlankName = 'fillBlank';
   static const String emojiMatchName = 'emojiMatch';
+  static const String soundMatchName = 'soundMatch';
+  static const String memoryMatchName = 'memoryMatch';
   static const String curriculumName = 'curriculum';
   static const String curriculumDayName = 'curriculumDay';
   static const String reviewName = 'review';
